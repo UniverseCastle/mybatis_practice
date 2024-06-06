@@ -2,20 +2,21 @@ package com.ex.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ex.data.MyTestDTO;
+import com.ex.data.TestDTO;
 import com.ex.service.TestService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/mytest/*")
+@RequestMapping("/test/*")
 public class TestController {
 
 	private final TestService testService;
@@ -26,34 +27,40 @@ public class TestController {
 		return "main";
 	}
 	
-//	회원가입 Get
+//	회원가입
 	@GetMapping("insert")
 	public String insert() {
 		return "insert";
 	}
 	
-//	회원가입 Post
 	@PostMapping("insert")
-	public String insert(MyTestDTO myTestDTO, Model model) {
-		model.addAttribute("result", testService.mytestInsert(myTestDTO));
+	public String insert(TestDTO testDTO, Model model) {
+		model.addAttribute("result", testService.testInsert(testDTO));
 		
 		return "insert";
 	}
 	
-//	로그인 Get
+//	로그인
 	@GetMapping("login")
 	public String login() {
 		return "login";
 	}
 	
-//	로그인 Post
+//	논리삭제('y')된 아이디 로그인 불가능하게
 	@PostMapping("login")
 	public String login(@RequestParam("username") String username,
-						 @RequestParam("password") String password,
-						 HttpSession session) {
-		int result = testService.mytestLogin(username, password);
+						@RequestParam("password") String password,
+						HttpSession session) {
+		int result = testService.testLogin(username, password);
 		if (result == 1) {
-			session.setAttribute("sid", username);
+			TestDTO testDTO = testService.testMyInfo(username);
+			if (testDTO.getDelete_yn().equals("n")) {
+				session.setAttribute("sid", username);
+			}else {
+				return "login";
+			}
+		}else {
+			return "login";
 		}
 		return "main";
 	}
@@ -62,7 +69,7 @@ public class TestController {
 	@GetMapping("logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-
+		
 		return "main";
 	}
 	
@@ -70,44 +77,52 @@ public class TestController {
 	@GetMapping("myInfo")
 	public String myInfo(HttpSession session, Model model) {
 		String username = (String)session.getAttribute("sid");
-		model.addAttribute("myTestDTO", testService.mytestMyInfo(username));
+		model.addAttribute("testDTO", testService.testMyInfo(username));
 		
 		return "myInfo";
 	}
 	
-//	전체회원 정보
+//	모든회원 정보
 	@GetMapping("userInfo")
 	public String userInfo(Model model) {
-		model.addAttribute("list", testService.mytestUserInfo());
+		model.addAttribute("list", testService.testUserInfo());
 		
 		return "userInfo";
 	}
 	
-//	회원탈퇴
-	@GetMapping("delete")
-	public String delete(HttpSession session) {
-		String username = (String)session.getAttribute("sid");
-		testService.mytestDelete(username);
-		session.invalidate();
-		
-		return "main";
-	}
-	
-//	회원수정 Get
+//	정보수정
 	@GetMapping("update")
 	public String update(HttpSession session, Model model) {
 		String username = (String)session.getAttribute("sid");
-		model.addAttribute("myTestDTO", testService.mytestMyInfo(username));
+		model.addAttribute("testDTO", testService.testMyInfo(username));
 		
 		return "update";
 	}
 	
-//	회원수정 Post
 	@PostMapping("update")
-	public String update(MyTestDTO myTestDTO) {
-		testService.mytestUpdate(myTestDTO);
+	public String update(TestDTO testDTO, Model model) {
+		model.addAttribute("result", testService.testUpdate(testDTO));
 		
-		return "main";
+		return "update";
 	}
 	
+//	회원탈퇴
+	@GetMapping("delete")
+	public String delete() {
+		return "delete";
+	}
+	
+	@PostMapping("delete")
+	public String delete(@RequestParam("password") String password,
+						 HttpSession session, Model model) {
+		String username = (String)session.getAttribute("sid");
+		TestDTO testDTO = testService.testMyInfo(username);
+		if (testDTO.getPassword().equals(password)) {
+			model.addAttribute("result", testService.testDelete(testDTO));
+			session.invalidate();
+			return "delete";
+		}else {
+			return "delete";
+		}
+	}
 }

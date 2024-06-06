@@ -2,16 +2,57 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>전체회원 정보</title>
+<title>모든회원 정보</title>
 </head>
 <body>
-	<div th:each="myTestDTO : ${list}">
-		<span th:text="${myTestDTO.username}"></span>
-		<span th:text="${myTestDTO.password}"></span>
-		<span th:text="${myTestDTO.age}"></span>
-		<span th:text="${myTestDTO.birth}"></span>
-		<span th:text="${#temporals.format(myTestDTO.reg, 'yyyy-MM-dd HH:mm')}"></span>
-		<br />
+	<div align="center">
+		<a href="/test/main">메인</a>
+		<div th:each="testDTO : ${list}">
+			<div th:if="${testDTO.delete_yn} == 'n'">	<!-- 삭제된 유저 제외 -->
+				<table style="border: 1px solid;">
+					<tr>
+						<td align="center">
+							<label>아이디 : </label>
+						</td>
+						<td>
+							<div th:text="${testDTO.username}"></div>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label>비밀번호 : </label>
+						</td>
+						<td>
+							<div th:text="${testDTO.password}"></div>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label>나이 : </label>
+						</td>
+						<td>
+							<div th:text="${testDTO.age}"></div>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label>생년월일 : </label>
+						</td>
+						<td>
+							<div th:text="${testDTO.birth}"></div>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label>가입날짜 : </label>
+						</td>
+						<td>
+							<div th:text="${#temporals.format(testDTO.reg, 'yyyy-MM-dd HH:mm')}"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

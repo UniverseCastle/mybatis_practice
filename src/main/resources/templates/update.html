@@ -5,16 +5,58 @@
 <title>정보수정</title>
 </head>
 <body>
-	<form action="/mytest/update" method="post">
-		<label for="id">아이디 : </label>
-		<input type="text" name="username" th:value="${myTestDTO.username}" id="id" size="10px"	/>	<br />
-		<label for="pw">비밀번호 : </label>
-		<input type="password" name="password" id="pw" size="10px"		/>	<br />
-		<label for="age">나이 : </label>
-		<input type="number" name="age" id="age" style="width: 40px;"	/>	<br />
-		<label for="birth">생일 : </label>
-		<span th:text="${myTestDTO.birth}"></span>	<br />
-		<input type="submit" value="수정하기"	/>
-	</form>
+	<div th:unless="${result == 1}">
+		<form action="/test/update" method="post">
+			<div align="center">
+				<table style="border: 1px solid;">
+					<tr>
+						<td align="center">
+							<label for="username">아이디 : </label>
+						</td>
+						<td>
+							<div th:text="${testDTO.username}"></div>
+							<input type="hidden" name="username" th:value="${testDTO.username}"	/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label for="password">비밀번호 : </label>
+						</td>
+						<td>
+							<input type="password" name="password" id="password" size="10px" required	/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label for="age">나이 : </label>
+						</td>
+						<td>
+							<input type="number" name="age" th:value="${testDTO.age}" id="age" max="99" style="width: 30px;" 	/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label>생일 : </label>
+						</td>
+						<td>
+							<input type="date" name="birth" th:value="${testDTO.birth}" style="width: 102px;"	/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+							<button type="submit">수정하기</button>
+						</td>
+					</tr>
+				</table>
+				<a href="/test/main">메인</a>
+			</div>
+		</form>
+	</div>
+	<div th:if="${result == 1}">
+		<script>
+			alert('정보수정이 완료되었습니다.');
+			location.href='/test/myInfo';
+		</script>
+	</div>
 </body>
 </html>

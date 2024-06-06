@@ -5,32 +5,56 @@
 <title>회원가입</title>
 </head>
 <body>
-	<div th:if="${myTestDTO} == null">
-	<form action="/mytest/insert" method="post">
-		<label for="id">아이디 : </label>
-		<input type="text" name="username" id="id" size="10px"				/>	<br />
-		<label for="pw">비밀번호 : </label>
-		<input type="password" name="password" id="pw" size="10px"			/>	<br />
-		<label for="age">나이 : </label>
-		<input type="number" name="age" id="age"	 style="width: 40px;"	/>	<br />
-		<label for="birth">생일 : </label>
-		<input type="date" name="birth" id="birth"							/>	<br />
-		<input type="submit" value="가입하기"	/>
-	</form>
+	<div th:unless="${result == 1}">
+		<form action="/test/insert" method="post">
+			<div align="center">
+				<table style="border: 1px solid;">
+					<tr>
+						<td align="center">
+							<label for="username">아이디 : </label>
+						</td>
+						<td>
+							<input type="text" name="username" id="username" size="10px" required	/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label for="password">비밀번호 : </label>
+						</td>
+						<td>
+							<input type="password" name="password" id="password" size="10px" required	/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label for="age">나이 : </label>
+						</td>
+						<td>
+							<input type="number" name="age" id="age" max="99" style="width: 30px;" 	/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">
+							<label>생일 : </label>
+						</td>
+						<td>
+							<input type="date" name="birth" style="width: 102px;"	/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+							<button type="submit">회원가입</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</form>
 	</div>
-	<div th:unless="${myTestDTO} == null">
-		<div th:if="${result == 1}">
-			<script>
-				alert('회원가입 완료');
-				location.href="/mytest/main";
-			</script>
-		</div>
-		<div th:unless="${result == 1}">
-			<script>
-				alert('다시 작성해주세요.');
-				history.go(-1);
-			</script>
-		</div>
+	<div th:if="${result == 1}">
+		<script>
+			alert('회원가입이 완료되었습니다.');
+			location.href='/test/main';
+		</script>
 	</div>
 </body>
 </html>

@@ -6,27 +6,27 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.ex.data.MyTestDTO;
+import com.ex.data.TestDTO;
 
 @Mapper
 @Repository
 public interface TestMapper {
 
 //	회원가입
-	public int mytestInsert(MyTestDTO myTestDTO);
+	public int testInsert(TestDTO testDTO);
 	
 //	로그인
-	public int mytestLogin(@Param("username") String username, @Param("password") String password);
+	public int testLogin(@Param("username") String username, @Param("password") String password);
 	
 //	내정보
-	public MyTestDTO mytestMyInfo(String username);
+	public TestDTO testMyInfo(String username);
 	
 //	전체회원 정보
-	public List<MyTestDTO> mytestUserInfo();
-	
-//	회원탈퇴
-	public int mytestDelete(String username);
+	public List<TestDTO> testUserInfo();
 	
 //	정보수정
-	public int mytestUpdate(MyTestDTO myTestDTO);
+	public int testUpdate(TestDTO testDTO);
+	
+//	회원탈퇴 (논리삭제)
+	public int testDelete(TestDTO testDTO);
 }

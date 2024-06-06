@@ -1,22 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ex.repository.TestMapper">
 
 	<!-- 회원가입 -->
-	<insert id="mytestInsert" parameterType="MyTestDTO">
+	<insert id="testInsert" parameterType="TestDTO">
 		insert into mytest values(
 			#{username},
 			#{password},
 			#{age},
 			#{birth},
-			sysdate
+			sysdate,
+			'n'
 		)
 	</insert>
 	
 	<!-- 로그인 -->
-	<select id="mytestLogin" resultType="int">
+	<select id="testLogin" resultType="int">
 		select count(*)
 		from mytest
 		where username=#{username} and password=#{password}
@@ -31,31 +32,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</sql>
 	
 	<!-- 내정보 -->
-	<select id="mytestMyInfo" resultType="MyTestDTO">
+	<select id="testMyInfo" resultType="TestDTO">
 		select *
 		from mytest
 		<include refid="whereUsername"	/>
 	</select>
 	
 	<!-- 전체회원 정보 -->
-	<select id="mytestUserInfo" resultType="MyTestDTO">
+	<select id="testUserInfo" resultType="TestDTO">
 		select *
 		from mytest
 	</select>
 	
-	<!-- 회원탈퇴 -->
-	<delete id="mytestDelete">
-		delete
-		from mytest
-		<include refid="whereUsername"	/>
-	</delete>
-	
 	<!-- 정보수정 -->
-	<update id="mytestUpdate" parameterType="MyTestDTO">
+	<update id="testUpdate" parameterType="TestDTO">
 		update mytest set
-			username=#{username},
 			password=#{password},
-			age=#{age}
+			age=#{age},
+			birth=#{birth}
+			<include refid="whereUsername"	/>
+	</update>
+	
+	<!-- 회원탈퇴 (논리삭제) -->
+	<update id="testDelete" parameterType="TestDTO">
+		update mytest set
+			delete_yn='y'
 			<include refid="whereUsername"	/>
 	</update>
 </mapper>
