@@ -56,5 +56,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			username=#{username},
 			password=#{password},
 			age=#{age}
+			<include refid="whereUsername"	/>
 	</update>
 </mapper>
