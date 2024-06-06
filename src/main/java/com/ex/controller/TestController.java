@@ -37,7 +37,7 @@ public class TestController {
 	public String insert(MyTestDTO myTestDTO, Model model) {
 		model.addAttribute("result", testService.mytestInsert(myTestDTO));
 		
-		return "main";
+		return "insert";
 	}
 	
 //	로그인 Get
