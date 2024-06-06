@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>전체회원 정보</title>
+</head>
+<body>
+	<div th:each="myTestDTO : ${list}">
+		<span th:text="${myTestDTO.username}"></span>
+		<span th:text="${myTestDTO.password}"></span>
+		<span th:text="${myTestDTO.age}"></span>
+		<span th:text="${myTestDTO.birth}"></span>
+		<span th:text="${#temporals.format(myTestDTO.reg, 'yyyy-MM-dd HH:mm')}"></span>
+		<br />
+	</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>메인</title>
+</head>
+<body>
+	<h1>메인 페이지</h1>
+	<span th:if="${session.sid} == null">
+		<a href="/mytest/insert">회원가입</a>
+		<a href="/mytest/login">로그인</a>
+	</span>
+	<span th:unless="${session.sid} == null">
+		<a th:href="@{/mytest/myInfo}" th:text="'내정보'"></a>
+		<a th:href="@{/mytest/userInfo}" th:text="'전체회원'"></a>
+		<a th:href="@{/mytest/update}" th:text="'정보수정'">정보수정</a>
+		<a th:href="@{/mytest/delete}" th:text="'회원탈퇴'">회원탈퇴</a>
+		<a th:href="@{/mytest/logout}" th:text="'로그아웃'">로그아웃</a>
+	</span>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+</head>
+<body>
+	<div th:if="${myTestDTO} == null">
+	<form action="/mytest/insert" method="post">
+		<label for="id">아이디 : </label>
+		<input type="text" name="username" id="id" size="10px"				/>	<br />
+		<label for="pw">비밀번호 : </label>
+		<input type="password" name="password" id="pw" size="10px"			/>	<br />
+		<label for="age">나이 : </label>
+		<input type="number" name="age" id="age"	 style="width: 40px;"	/>	<br />
+		<label for="birth">생일 : </label>
+		<input type="date" name="birth" id="birth"							/>	<br />
+		<input type="submit" value="가입하기"	/>
+	</form>
+	</div>
+	<div th:unless="${myTestDTO} == null">
+		<div th:if="${result == 1}">
+			<script>
+				alert('회원가입 완료');
+				location.href="/mytest/main";
+			</script>
+		</div>
+		<div th:unless="${result == 1}">
+			<script>
+				alert('다시 작성해주세요.');
+				history.go(-1);
+			</script>
+		</div>
+	</div>
+</body>
+</html>
