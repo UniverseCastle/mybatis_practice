@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>글목록</title>
+</head>
+<body>
+	<div th:unless="${count} != 0" align="center">
+		<div th:utext="'<h2>'+우리+' '+학원+' '+게시판+'</h2>'"></div>
+		<div th:text="'전체글 개수 : '+${count}"></div>
+		<a href="/board/insert">글쓰기</a>
+		<h2>글이 존재하지 않습니다.</h2>
+	</div>
+	<div th:if="${count} != 0" align="center">
+		<div th:utext="'<h2>'+우리+' '+학원+' '+게시판+'</h2>'"></div>
+		<div th:text="'전체글 개수 : '+${count}"></div>
+		<a href="/board/insert">글쓰기</a>
+		<table style="border: 1px solid; width: 800px;">
+			<tr>
+				<th th:text="글번호"></th>
+				<th th:text="글제목"></th>
+				<th th:text="작성자"></th>
+				<th th:text="작성일"></th>
+				<th th:text="조회수"></th>
+			</tr>
+			<tr th:each="boardDTO : ${list}">
+				<td th:text="${boardDTO.num}"></td>
+				<td>
+					<span th:if="${boardDTO.re_level} > 0">
+						<img src="/images/level.gif" th:width="${boardDTO.re_level} * 5" height="16"	/>
+						<img src="/images/re.gif"	/>
+					</span>
+					<span th:unless="${boardDTO.re_level}  > 0">
+			  			<img src="images/level.gif" width="5" height="16">
+			  		</span>
+					<span>
+						<a th:href="@{|/board/content?num=${boardDTO.num}&pageNum=${pageNum}|}" th:text="${boardDTO.title}"></a>
+					</span>
+					<span th:if="${boardDTO.readCount} >= 20">
+	         			<img src="/images/hot.gif" border="0"  height="16">
+	         		</span>
+				</td>
+				<td th:text="${boardDTO.writer}"></td>
+				<td th:text="${#temporals.format(boardDTO.reg, 'yyyy-MM-dd HH:mm')}"></td>
+				<td th:text="${boardDTO.readCount}"></td>
+			</tr>
+		</table>
+		<!-- 페이징 처리 -->
+		<div th:if="${count} > 0">
+			<span th:if="${startPage > 10}">
+				<a th:href="@{|/board/list?pageNum=${startPage - 10}|}" th:text="'[이전]'"></a>
+			</span>
+			<span th:each="i : ${#numbers.sequence(startPage,endPage)}">
+	        	<a th:unless="${pageNum == i}" th:href="@{|/board/list?pageNum=${i}|}" th:text=" '['+${i}+']' "></a>
+	        	<span th:if="${pageNum == i}">
+	            	[<b style="color:lightgray;" th:text="${i}"></b>]
+	        	</span>
+		      </span>
+			<span th:if="${endPage} < ${pageCount}">
+				<a th:href="@{|/board/list?pageNum=${startPage + 10}|}" th:text="'[다음]'"></a>
+			</span>
+		</div>
+	</div>
+</body>
+</html>

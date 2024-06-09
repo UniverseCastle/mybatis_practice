@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ex.repository.BoardMapper">
+	<!-- NULL일 경우 값 1로 -->
+	<select id="maxNum" resultType="int">
+		select NVL(max(num), 1)
+		from myboard
+	</select>
+	
+	<!-- 답글 생길때마다 1씩 증가 -->
+	<update id="reStepUp">
+		update myboard
+		set re_step=re_step+1
+		where ref=#{ref} and re_step>#{re_step}
+	</update>
+	
+	<!-- 게시글 추가 파라미터타입 생략가능 -->
+	<insert id="boardInsert">
+		insert into myboard values(
+			myboard_seq.NEXTVAL,
+			#{writer},
+			#{title},
+			#{content},
+			#{passwd},
+			0,		<!-- 조회수 0 넣어줌 -->
+			#{ref},
+			#{re_step},
+			#{re_level},
+			sysdate,
+			'n'
+		)
+	</insert>
+	
+	<!-- 글 개수 -->
+	<select id="boardCount" resultType="int">
+		select count(*)
+		from myboard
+	</select>
+	
+	<!-- 글 목록 -->
+	<select id="boardList" resultType="BoardDTO">
+		<!-- CDATA : 부등호 같은 기호 사용할 수 있게 해줌 -->
+		<![CDATA[
+			select *
+			from
+				(select b.*, rownum r
+				 from
+					(select *
+				 	 from myboard
+				 	 where delete_yn='n'
+				 	 order by ref desc, re_step asc) b)
+			where r>=#{start} and r<=#{end}
+		]]>
+	</select>
+	
+	<!-- 글 내용 (조회수 증가) -->
+	<update id="readCountUp">
+		update myboard
+		set readCount=readCount+1
+		where num=#{num}
+		
+	</update>
+	
+	<!-- 글번호로 글정보 가져오기 -->
+	<select id="boardNum" resultType="BoardDTO">
+		select *
+		from myboard
+		where num=#{num}
+		and delete_yn='n'
+	</select>
+	
+	<!-- 비밀번호 확인 -->
+	<select id="passwdNum" resultType="String">
+		select passwd
+		from myboard
+		where num=#{num}
+	</select>
+	
+	<!-- 글 수정 -->
+	<update id="boardUpdate">
+		update myboard
+		set writer=#{writer},
+			title=#{title},
+			content=#{content},
+			passwd=#{passwd}
+		where num=#{num}
+	</update>
+	
+	<!-- 글 삭제 (논리삭제) -->
+	<update id="boardDelete">
+		update myboard
+		set delete_yn='y'
+		where num=#{num}
+	</update>
+	
+</mapper>

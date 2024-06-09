@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>글내용</title>
+<style>
+	td {
+		border: 1px solid;
+	}
+</style>
+</head>
+<body>
+	<div align="center">
+		<table style="border: 1px solid; width: 400px; text-align: center;">
+			<tr>
+				<td><label>글번호</label></td>
+				<td th:text="${boardDTO.num}"></td>
+				<td><label>조회수</label></td>
+				<td th:text="${boardDTO.readCount}"></td>
+			</tr>
+			<tr>
+				<td><label>글제목</label></td>
+				<td th:text="${boardDTO.title}"></td>
+				<td><label>작성자</label></td>
+				<td th:text="${boardDTO.writer}"></td>
+			</tr>
+			<tr>
+				<td><label>작성일</label></td>
+				<td th:text="${#temporals.format(boardDTO.reg, 'yyyy-MM-dd HH:mm')}" colspan="3"></td>
+			</tr>
+			<tr>
+				<td><label>글내용</label></td>
+				<td th:text="${boardDTO.content}" height="300" colspan="3" align="left"></td>
+			</tr>
+		</table>
+		<a th:href="@{|/board/insert?num=${boardDTO.num}&ref=${boardDTO.ref}&re_step=${boardDTO.re_step}&re_level=${boardDTO.re_level}|}" th:text="답글"></a>
+		<a th:href="@{|/board/update?num=${boardDTO.num}&pageNum=${pageNum}|}" th:text="수정"></a>
+		<a th:href="@{|/board/delete?num=${boardDTO.num}&pageNum=${pageNum}|}" th:text="삭제"></a>
+		<a th:href="@{|/board/list?pageNum=${pageNum}|}" th:text="목록"></a>
+	</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>글 수정</title>
+</head>
+<body>
+	<div align="center">
+		<form action="/board/update" method="post">
+			<input type="hidden" name="num" th:value="${boardDTO.num}"	/>
+			<table style="width: 400px; border: 1px solid;">
+			<tr>
+				<td width="70" align="center">작성자</td>
+				<td width="330">
+					<div th:text="${boardDTO.writer}"></div>
+					<input type="hidden" name="writer" th:value="${boardDTO.writer}"	/>
+				</td>
+			</tr>
+			<tr>
+				<td width="70" align="center">제목</td>
+				<td width="330">
+					<span>
+						<input type="text" size="10" maxlength="10" name="title" th:value="${boardDTO.title}"	/>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td width="70" align="center">글내용</td>
+				<td width="330">
+					<textarea name="content" rows="13" cols="40">[[${boardDTO.content}]]</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td width="70" align="center">비밀번호</td>
+				<td width="330">
+					<input type="password" size="8" maxlength="12" name="passwd"	/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="수정"	/>
+					<input type="reset" value="다시작성"	/>
+					<input type="button" value="글목록" onclick="window.location='/board/list'"	/>
+				</td>
+			</tr>
+		</table>
+		<input type="hidden" id="num" th:value="${boardDTO.num}"	/>
+		<input type="hidden" name="pageNum" id="pageNum" th:value="${pageNum}"	/>
+		</form>
+	</div>
+	<div th:if="${result == 1}">
+		<script>
+			const num = document.getElementById('num').value;
+			const pageNum = document.getElementById('pageNum').value;
+			alert('수정이 완료되었습니다.');
+			location.href='/board/content?num='+num+'&pageNum='+pageNum;
+		</script>
+	</div>
+</body>
+</html>
